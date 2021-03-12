@@ -1,0 +1,33 @@
+.welcome{
+  position: absolute;
+  left:0px;
+  top:0px;
+  width:calc(100% - 2em);
+  height:calc(100% - 10em);
+  background:white;
+  font-size:16px;
+  text-align:center;
+  padding:9em 1em 1em 1em;
+  input[type=text]{
+    width:calc(100% - 2em);
+    font-size:16px;
+    border:0px;
+    border-radius:1em;
+    padding:.5em 1em;
+    color:white;
+    background:#1976d2;
+    outline: none;
+  }
+  input[type=text]::placeholder{
+    color:rgba(255,255,255,.5);
+  }
+  .top.action{
+    position:absolute;
+    top:0px;
+    left:0px;
+    width:calc(100% - 1em);
+    text-align:right;
+    padding:1em 0.5em;
+    background:#1976d2;
+  }
+}

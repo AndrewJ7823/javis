@@ -1,0 +1,20 @@
+<div class="toolbar" role="banner">
+  <ng-container *ngIf="searchMode; then searchView; else normalView"></ng-container>
+  <ng-template #normalView>
+    <div class="button" (click)="setSearchMode()">
+      <fa-icon [icon]="faSearch"></fa-icon>
+    </div>
+    <div class="title">Javis</div>
+    <div class="spacer"></div>
+  </ng-template>
+  <ng-template #searchView>
+    <div class="form">
+      <form [formGroup]="searchForm" (ngSubmit)="onSubmit()">
+        <input id="keyword" #keyword type="text" formControlName="keyword">
+        <div class="button search">
+          <fa-icon [icon]="faSearch"></fa-icon>
+        </div>
+      </form>
+    </div>
+  </ng-template>
+</div>

@@ -1,0 +1,28 @@
+<h2>TV List</h2>
+<div class='gallery'>
+  <div class="item" *ngFor="let item of tmdbTvItems">
+    <a
+      [title]="item.name"
+      [routerLink]="['/tv', item.id]"
+    >
+      <img [src]="getImageUrl(item)" />
+      <div class="overview">{{ item.overview }}</div>
+      <div class="title">{{ item.name }}</div>
+    </a>
+  </div>
+</div>
+<!-- {
+  backdrop_path: '/8GFGa8SUZ5EwJaCBBzvxrXDJldb.jpg',
+  first_air_date: '2019-07-27',
+  genre_ids: [Array],
+  id: 91121,
+  name: '놀면 뭐하니?',
+  origin_country: [Array],
+  original_language: 'ko',
+  original_name: '놀면 뭐하니?',
+  overview: '평소 스케줄 없는 날 "놀면 뭐하니?"라고 말하는 유재석에게 카메라를 맡기면서 시작된 릴레이 카메라. 수많은 사람을 거치며 카메라에 담긴 의외의 인물들과 다양한 이야기를 담은 프로그램',
+  popularity: 32.309,
+  poster_path: '/wz5XJh5CPrfx45T2LmoRAXlR1Db.jpg',
+  vote_average: 9.4,
+  vote_count: 9
+} -->

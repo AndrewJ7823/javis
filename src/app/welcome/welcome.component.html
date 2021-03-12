@@ -1,0 +1,30 @@
+<div class="welcome">
+  <div *ngIf="!savedApiKey" [formGroup]="welcomeForm">
+    <div class="top action toolbar">
+      <button [disabled]="apiKey.invalid" (click)="saveApiKey()">Save</button>
+    </div>
+    <label for="apiKey">
+      TMDb API Key
+    </label>
+    <input
+      type="text"
+      required
+      minLength="32"
+      maxLength="32"
+      id="apiKey"
+      formControlName="apiKey"
+      placeholder="API key(v3) here"
+    >
+    <div *ngIf="apiKey.invalid && (apiKey.dirty || apiKey.touched)" class="error">
+      <div *ngIf="apiKey.errors.required">
+        API Key is required.
+      </div>
+      <div *ngIf="apiKey.errors.minlength || apiKey.errors.maxlength">
+        API Key must be 32 characters long.
+      </div>
+      <div *ngIf="apiKey.errors.apiKey">
+        API Key must be 32 hexa characters(0~9, a-f) long.
+      </div>
+    </div>
+  </div>
+</div>

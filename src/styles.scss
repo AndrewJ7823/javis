@@ -1,1 +1,43 @@
 /* You can add global styles to this file, and also import other style files */
+button{
+  border:0px;
+  outline: none;
+  transition:background-color 500ms;
+  &[disabled]{
+    opacity: 0.5;
+  }
+  &[disabled]:hover{
+    background:transparent !important;
+  }
+  &[disabled]:active{
+    background:transparent !important;
+  }
+  &:hover{
+    background:rgba(0,0,0,.1);
+  }
+  &:active{
+    background:rgba(0,0,0,.3);
+    transition:background-color 1ms;
+  }
+
+}
+
+.toolbar{
+  button{
+    background:transparent;
+    color:white;
+    border:0px;
+    font-size:16px;
+    border-radius:1em;
+    padding:.5em 1em;
+    outline: none;
+    transition:background-color 500ms;
+    &:hover{
+      background:rgba(0,0,0,.1);
+    }
+    &:active{
+      background:rgba(0,0,0,.3);
+      transition:background-color 1ms;
+    }
+  }
+}
