@@ -17,18 +17,16 @@ export class WelcomeComponent implements OnInit {
   ngOnInit(): void {
     if(this.tmdbService.hasApiKey()){
       this.moveToDiscovery();
-    }else{
-      this.savedApiKey = this.tmdbService.getApiKey();
-      this.welcomeForm = new FormGroup({
-        apiKey: new FormControl('', [
-          Validators.required,
-          Validators.minLength(32),
-          Validators.maxLength(32),
-          this.validateApiKey()
-        ])
-      });
     }
-
+    this.savedApiKey = this.tmdbService.getApiKey();
+    this.welcomeForm = new FormGroup({
+      apiKey: new FormControl('', [
+        Validators.required,
+        Validators.minLength(32),
+        Validators.maxLength(32),
+        this.validateApiKey()
+      ])
+    });
   }
   get apiKey() {
     return this.welcomeForm.get("apiKey");
@@ -44,6 +42,10 @@ export class WelcomeComponent implements OnInit {
     this.moveToDiscovery();
   }
   moveToDiscovery() {
-    this.router.navigate(['/discovery']);
+    this.tmdbService.getConfig().then(()=>{
+      this.router.navigate(['/discovery']);
+    }).catch(e=>{
+      alert(e);
+    });
   }
 }
