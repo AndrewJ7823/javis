@@ -1,11 +1,15 @@
-<h2>TV List</h2>
+<h2>
+  TV List
+  <span *ngIf="this.keyword"> : {{ this.keyword }} </span>
+</h2>
+
 <div class='gallery'>
   <div class="item" *ngFor="let item of tmdbTvItems">
     <a
       [title]="item.name"
       [routerLink]="['/tv', item.id]"
     >
-      <img [src]="getImageUrl(item)" />
+      <img *ngIf="item.poster_path" [src]="tmdbService.getImageUrl(item)" />
       <div class="overview">{{ item.overview }}</div>
       <div class="title">{{ item.name }}</div>
     </a>

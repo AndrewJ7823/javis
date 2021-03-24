@@ -1,6 +1,9 @@
 <div class="toolbar" role="banner">
   <ng-container *ngIf="searchMode; then searchView; else normalView"></ng-container>
   <ng-template #normalView>
+    <div class="button" (click)="back()">
+      <fa-icon [icon]="faChevronLeft"></fa-icon>
+    </div>
     <div class="button" (click)="setSearchMode()">
       <fa-icon [icon]="faSearch"></fa-icon>
     </div>

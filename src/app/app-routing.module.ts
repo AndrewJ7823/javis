@@ -8,6 +8,7 @@ import { TvDetailComponent } from './tv-detail/tv-detail.component';
 const routes: Routes = [
   {path:"", component:WelcomeComponent},
   {path:"discovery", component:TvListComponent},
+  {path:"discovery/:keyword", component:TvListComponent},
   {path:"tv/:id", component:TvDetailComponent}
 ];
 

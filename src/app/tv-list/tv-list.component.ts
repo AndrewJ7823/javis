@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { TmdbService } from "../tmdb.service";
 
 import { TmdbConfig } from "../tmdb-config";
-import { TmdbTvDiscovery } from "../tmdb-tv-discovery";
+import { TmdbTvResults } from "../tmdb-tv-Results";
 import { TmdbTvItem } from "../tmdb-tv-item";
 
 
@@ -15,21 +15,27 @@ import { TmdbTvItem } from "../tmdb-tv-item";
 })
 export class TvListComponent implements OnInit {
   tmdbConfig:TmdbConfig;
-  tmdbTvDiscovery:TmdbTvDiscovery;
+  tmdbTvResults:TmdbTvResults;
   tmdbTvItems;
+  keyword:string;
   page=1;
-  constructor(private tmdbService:TmdbService, private router: Router) {
+  constructor(private tmdbService:TmdbService, private router: Router, private route:ActivatedRoute) {
+
   }
 
   ngOnInit(): void {
     if(this.tmdbService.hasApiKey()){
-      Promise.all([
-        this.tmdbService.getConfig(),
-        this.tmdbService.getDiscover(this.page)
-      ]).then(values=>{
-        this.tmdbConfig = values[0];
-        this.tmdbTvItems= values[1].results;
-      });
+      this.tmdbService.getConfig().then(
+        tmdbConfig => {
+          this.tmdbConfig = tmdbConfig;
+          this.route.paramMap.subscribe(params=>{
+            this.keyword = params.get("keyword");
+            this.tmdbService.searchTV(this.keyword).subscribe(tmdbTvResults=>{
+              this.tmdbTvItems = tmdbTvResults.results;
+            });
+          });
+        }
+      );
     }else{
       this.moveToWelcome();
     }
@@ -37,14 +43,5 @@ export class TvListComponent implements OnInit {
   }
   moveToWelcome() {
     this.router.navigate(['/']);
-  }
-  getBaseUrl(){
-    return this.tmdbConfig.images.base_url;
-  }
-  getPosterSize(){
-    return this.tmdbConfig.images.poster_sizes[1];
-  }
-  getImageUrl(item:TmdbTvItem){
-    return [this.getBaseUrl(), this.getPosterSize(), item.poster_path].join("");
   }
 }

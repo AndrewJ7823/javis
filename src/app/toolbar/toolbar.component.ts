@@ -1,7 +1,9 @@
 
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import { faSearch } from '@fortawesome/free-solid-svg-icons'
+import { Router } from '@angular/router';
+import { faSearch, faChevronLeft } from '@fortawesome/free-solid-svg-icons'
+import { TmdbService } from "../tmdb.service";
 
 @Component({
   selector: 'app-toolbar',
@@ -10,10 +12,11 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons'
 })
 export class ToolbarComponent implements OnInit {
   faSearch = faSearch;
+  faChevronLeft = faChevronLeft;
   searchForm;
   searchMode:boolean=false;
   @ViewChild("keyword") keyword:ElementRef;
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private router: Router, private tmdbService:TmdbService) {
     this.searchForm = this.formBuilder.group({
       keyword:''
     });
@@ -29,6 +32,10 @@ export class ToolbarComponent implements OnInit {
   }
   onSubmit(): void {
     this.searchMode=false;
-    alert(`search ${this.searchForm.value.keyword}`);
+    this.router.navigate(['/discovery', this.searchForm.value.keyword]);
+    // this.tmdbService.searchTV(this.searchForm.value.keyword);
+  }
+  back(): void{
+    history.back();
   }
 }

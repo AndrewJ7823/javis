@@ -1,6 +1,6 @@
 import { TmdbTvItem } from './tmdb-tv-item';
 
-export interface TmdbTvDiscovery {
+export interface TmdbTvResults {
   page: number,
   results: Array<TmdbTvItem>,
   total_pages: number,

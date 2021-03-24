@@ -2,11 +2,13 @@ import { Injectable } from '@angular/core';
 
 import { HttpClient, HttpParams } from "@angular/common/http";
 
-import { TmdbTvDiscovery } from './tmdb-tv-discovery';
+import { TmdbTvResults } from './tmdb-tv-Results';
 import { TmdbConfig } from './tmdb-config';
+import { TmdbTvItem } from './tmdb-tv-item';
 import { TmdbTvDetail } from './tmdb-tv-detail';
 
 import * as moment from 'moment';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +16,10 @@ import * as moment from 'moment';
 
 export class TmdbService {
   tmdbConfig:TmdbConfig;
-  constructor(private http: HttpClient) {
+  private searchResultSource = new Subject<TmdbTvResults>();
+  searchResult$ = this.searchResultSource.asObservable();
 
+  constructor(private http: HttpClient) {
   }
   setApiKey(apiKey:string) {
     if(apiKey.length>0){
@@ -29,16 +33,36 @@ export class TmdbService {
     let apiKey = this.getApiKey();
     return (apiKey&&apiKey.length===32);
   }
-  async getConfig(){
+  async getConfig(apiKey:string=this.getApiKey()){
     if(!this.tmdbConfig){
       const params = {
-        api_key:this.getApiKey()
+        api_key:apiKey
       };
       this.tmdbConfig = await this.http.get<TmdbConfig>("https://api.themoviedb.org/3/configuration", {params:new HttpParams({fromObject:params})}).toPromise();
     }
     return this.tmdbConfig;
   }
-  async getDiscover(page = 1){
+  getTv(id:number){
+    const params = {
+      api_key:this.getApiKey(),
+      language:'ko'
+    };
+    return this.http.get<TmdbTvDetail>(`https://api.themoviedb.org/3/tv/${id}`, {params:new HttpParams({fromObject:params})});
+  }
+  searchTV(keyword:string="", page = 1){
+    const params = {
+      api_key:this.getApiKey(),
+      page:page.toString(),
+      language:'ko'
+    };
+    if(!keyword || keyword.length===0){
+      this.searchResult$ = this.searchByDiscover(page);
+    }else{
+      this.searchResult$ = this.searchByKeyword(keyword, page);
+    }
+    return this.searchResult$;
+  }
+  searchByDiscover(page = 1){
     const params = {
       api_key:this.getApiKey(),
       page:page.toString(),
@@ -48,13 +72,29 @@ export class TmdbService {
       'air_date.gte':moment().startOf("week").format("yyyy-MM-DD"),
       'air_date.lte':moment().endOf("week").format("yyyy-MM-DD")
     };
-    return await this.http.get<TmdbTvDiscovery>("https://api.themoviedb.org/3/discover/tv", {params:new HttpParams({fromObject:params})}).toPromise();
+    return this.http.get<TmdbTvResults>("https://api.themoviedb.org/3/discover/tv", {params:new HttpParams({fromObject:params})});
   }
-  async getTv(id:number){
+  searchByKeyword(keyword:string="", page = 1){
     const params = {
       api_key:this.getApiKey(),
-      language:'ko'
+      page:page.toString(),
+      language:'ko',
+      query:keyword
     };
-    return await this.http.get<TmdbTvDetail>(`https://api.themoviedb.org/3/tv/${id}`, {params:new HttpParams({fromObject:params})}).toPromise();
+    return this.http.get<TmdbTvResults>("https://api.themoviedb.org/3/search/tv", {params:new HttpParams({fromObject:params})});
+  }
+  getBaseUrl(){
+    return this.tmdbConfig.images.base_url;
+  }
+  getPosterSize(){
+    return this.tmdbConfig.images.poster_sizes[1];
+  }
+  getImageUrl(item:TmdbTvItem){
+    if(this.tmdbConfig){
+      return [this.getBaseUrl(), this.getPosterSize(), item.poster_path].join("");
+    }else{
+      return "";
+    }
+
   }
 }

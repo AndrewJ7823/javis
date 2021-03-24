@@ -38,14 +38,12 @@ export class WelcomeComponent implements OnInit {
     };
   }
   saveApiKey() {
-    this.tmdbService.setApiKey(this.apiKey.value);
-    this.moveToDiscovery();
+    this.tmdbService.getConfig(this.apiKey.value).then(tmdbConfig=>{
+      this.tmdbService.setApiKey(this.apiKey.value);
+      this.moveToDiscovery();
+    });
   }
   moveToDiscovery() {
-    this.tmdbService.getConfig().then(()=>{
-      this.router.navigate(['/discovery']);
-    }).catch(e=>{
-      alert(e);
-    });
+    this.router.navigate(['/discovery']);
   }
 }
