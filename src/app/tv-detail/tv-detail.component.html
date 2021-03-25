@@ -1,10 +1,19 @@
 <h2>Details</h2>
 <ng-container *ngIf="tmdbTvDetail; then results; else loading"></ng-container>
   <ng-template #results>
-    <div class="poster">
-      <img *ngIf="tmdbTvDetail.poster_path" [src]="tmdbService.getImageUrl(tmdbTvDetail)" />
+    <div class="backdrop">
+      <img *ngIf="tmdbTvDetail.backdrop_path" [src]="tmdbService.getBackdropUrl(tmdbTvDetail)" />
     </div>
-    <div> 제목 : {{ tmdbTvDetail.name }} </div>
+    <div class="contents">
+      <div class="name"> <h3>{{ tmdbTvDetail.name }}</h3></div>
+      <div class="last_episode_to_air" *ngIf="tmdbTvDetail.last_episode_to_air">
+        <a [href]="getSearchUrl(tmdbTvDetail)" target="_blank">
+          <img *ngIf="tmdbTvDetail.last_episode_to_air.still_path" [src]="tmdbService.getStillUrl(tmdbTvDetail.last_episode_to_air.still_path)">
+          <span> {{ tmdbTvDetail.last_episode_to_air.air_date }} </span>
+        </a>
+      </div>
+
+    </div>
   </ng-template>
   <ng-template #loading>
     <div> 불러오는 중... </div>

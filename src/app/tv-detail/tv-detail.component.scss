@@ -1,0 +1,23 @@
+
+.backdrop{
+  width:100%;
+  img{
+    width:100%;
+  }
+}
+.contents{
+  text-align:center;
+  .last_episode_to_air{
+    text-align:left;
+    -webkit-box-shadow: 1px 1px 15px 0px rgba(0,0,0,.3);
+    box-shadow: 1px 1px 15px 0px rgba(0,0,0,.3);
+    border:1px solid rgba(0,0,0,.3);
+    border-radius:1em;
+    padding:1em;
+    img{
+      margin-right:1em;
+      height:100%;
+    }
+  }
+}
+

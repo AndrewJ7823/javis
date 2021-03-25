@@ -89,12 +89,31 @@ export class TmdbService {
   getPosterSize(){
     return this.tmdbConfig.images.poster_sizes[1];
   }
+  getBackdropSize(){
+    return this.tmdbConfig.images.backdrop_sizes[1];
+  }
+  getStillSize(){
+    return this.tmdbConfig.images.still_sizes[0];
+  }
   getImageUrl(item:TmdbTvItem){
     if(this.tmdbConfig){
       return [this.getBaseUrl(), this.getPosterSize(), item.poster_path].join("");
     }else{
       return "";
     }
-
+  }
+  getBackdropUrl(item:TmdbTvItem){
+    if(this.tmdbConfig){
+      return [this.getBaseUrl(), this.getBackdropSize(), item.backdrop_path].join("");
+    }else{
+      return "";
+    }
+  }
+  getStillUrl(img:string){
+    if(this.tmdbConfig){
+      return [this.getBaseUrl(), this.getStillSize(), img].join("");
+    }else{
+      return "";
+    }
   }
 }

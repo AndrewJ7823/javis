@@ -29,8 +29,9 @@ export class TvDetailComponent implements OnInit {
 
     });
   }
-  getTv() {
-
+  getSearchUrl(tmdbTvDetail:TmdbTvDetail){
+    let date = tmdbTvDetail.last_episode_to_air.air_date.replace(/-/g, "").substr(2);
+    let ret = `${tmdbTvDetail.name} ${date} torrent`;
+    return `https://www.google.com/search?q=${ret}`;
   }
-
 }
